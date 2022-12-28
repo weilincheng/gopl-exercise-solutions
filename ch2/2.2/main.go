@@ -8,15 +8,25 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"strconv"
 
-	"exercises2.1/tempconv"
+	"gopl_exercise/ch2/lengthconv"
+	"gopl_exercise/ch2/tempconv"
+	"gopl_exercise/ch2/weightconv"
 )
 
 func main() {
-	for _, arg := range os.Args[1:] {
+	input := os.Args[1:]
+	if len(input) == 0 {
+		fmt.Print("Input a number: ")
+		scanner := bufio.NewScanner(os.Stdin)
+		scanner.Scan()
+		input = append(input, scanner.Text())
+	}
+	for _, arg := range input {
 		t, err := strconv.ParseFloat(arg, 64)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "cf: %v\n", err)
@@ -26,6 +36,16 @@ func main() {
 		c := tempconv.Celsius(t)
 		fmt.Printf("%s = %s, %s = %s\n",
 			f, tempconv.FToC(f), c, tempconv.CToF(c))
+
+		feet := lengthconv.Feet(t)
+		meters := lengthconv.Meters(t)
+		fmt.Printf("%s = %s, %s = %s\n",
+			feet, lengthconv.FToM(feet), meters, lengthconv.MToF(meters))
+
+		pounds := weightconv.Pounds(t)
+		kilograms := weightconv.Kilograms(t)
+		fmt.Printf("%s = %s, %s = %s\n",
+			pounds, weightconv.PToK(pounds), kilograms, weightconv.KToP(kilograms))
 	}
 }
 
